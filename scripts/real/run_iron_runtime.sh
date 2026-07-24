@@ -19,6 +19,7 @@ WARMUP=${WARMUP:-5}
 K=${K:-100}
 PATH_BATCH_SIZE=${PATH_BATCH_SIZE:-0}
 OUTPUT_FILE=${OUTPUT_FILE:-runtime_all.csv}
+RUNTIME_TABLE_OUTPUT=${RUNTIME_TABLE_OUTPUT:-runtime_table.csv}
 FORCE_RECOMPUTE=${FORCE_RECOMPUTE:-0}
 
 mkdir -p logs_runtime
@@ -53,4 +54,7 @@ for data in ${DATASETS}; do
 done
 
 echo "[AGGREGATE] ${OUTPUT_FILE}"
-PYTHONPATH=. python agg_runtime.py
+RUNTIME_INPUT="${OUTPUT_FILE}" \
+RUNTIME_TABLE_OUTPUT="${RUNTIME_TABLE_OUTPUT}" \
+PYTHONPATH=. \
+python agg_runtime.py
