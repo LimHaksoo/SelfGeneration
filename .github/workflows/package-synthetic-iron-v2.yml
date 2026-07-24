@@ -1,0 +1,32 @@
+name: package-synthetic-iron-v2
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate-and-package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Compile modified Python files
+        run: |
+          python -m py_compile \
+            synthetic_iron_whitebox_v2_modified_files_only/synthetic/iron_whitebox_common.py \
+            synthetic_iron_whitebox_v2_modified_files_only/synthetic/eval_iron_whitebox.py \
+            synthetic_iron_whitebox_v2_modified_files_only/synthetic/aggregate_iron_whitebox.py
+      - name: Stage modified files only
+        run: |
+          mkdir -p package/synthetic
+          cp synthetic_iron_whitebox_v2_modified_files_only/synthetic/iron_whitebox_common.py package/synthetic/
+          cp synthetic_iron_whitebox_v2_modified_files_only/synthetic/eval_iron_whitebox.py package/synthetic/
+          cp synthetic_iron_whitebox_v2_modified_files_only/synthetic/aggregate_iron_whitebox.py package/synthetic/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: synthetic-iron-whitebox-v2-modified-files-only
+          path: package
+          if-no-files-found: error
+          retention-days: 7
