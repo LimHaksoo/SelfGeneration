@@ -146,7 +146,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     tex_lines = [
         (
             f"{row['dataset']} & IRON & {row['baseline']} "
-            f"& {row['CPD_latex']} \\\\"
+            f"& {row['CPD_latex']} " + r"\\"
         )
         for row in summary_rows
     ]
