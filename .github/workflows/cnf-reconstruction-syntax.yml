@@ -1,0 +1,22 @@
+name: cnf-reconstruction-syntax
+
+on:
+  push:
+    branches:
+      - delivery/cnf-reconstruction-v1
+
+jobs:
+  syntax:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Python syntax
+        run: |
+          python -m py_compile \
+            real/eval_cnf_reconstruction.py \
+            real/aggregate_cnf_reconstruction.py
+      - name: Bash syntax
+        run: bash -n scripts/real/run_cnf_reconstruction.sh
